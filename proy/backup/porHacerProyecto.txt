@@ -1,0 +1,9 @@
+Actividades por hacer: 
+
+
+1- Automatizar la creacion de botones desde la BD
+2- Insertar los contadores parciales que salen de las cookies a la BD
+3- empezar con un panel de estadistica del contador de visitas.
+   3.1 - mostrar el consolidado total de una ruta 
+   3.2 - mostrar el numero de personas en un determinado rango de horas 
+   3.3 - mostrar promedio de frecuencia de buses

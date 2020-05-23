@@ -1,0 +1,8 @@
+
+crea la sesión de que un portal ya se seleccionó -> 
+
+el javascript transcribe al HTML los datos a la pantalla
+de usuario mostrando las respectivas rutas -> 
+
+y recordar el portal seleccionado de acuerdo a la sesion
+
