@@ -12,7 +12,7 @@ include("../includes/verificaUsuario.php");
     <center>
               <svg width="600" height="100" viewBox="0 0 500 75">
                   <text id="titulo" x="0" y="60">
-                      Ninguno
+                      Cargando ... 
                   </text>
               </svg>
     </center>
