@@ -57,6 +57,41 @@
       BACKGROUND-COLOR: #ffb81c 
 
     }
+    #botonRutaF{
+      BORDER:  rgb(15,15,15) 4px solid; 
+      FONT-SIZE: 75pt; color: white; 
+      FONT-FAMILY: Verdana; 
+      BACKGROUND-COLOR: #cb333b 
+
+    }
+    #botonRutaJ{
+      BORDER:  rgb(15,15,15) 4px solid; 
+      FONT-SIZE: 75pt; color: white; 
+      FONT-FAMILY: Verdana; 
+      BACKGROUND-COLOR: #d592aa 
+
+    }
+    #botonRutaG{
+      BORDER:  rgb(15,15,15) 4px solid; 
+      FONT-SIZE: 75pt; color: white; 
+      FONT-FAMILY: Verdana; 
+      BACKGROUND-COLOR: #00a9e0 
+
+    }
+    #botonRutaE{
+      BORDER:  rgb(15,15,15) 4px solid; 
+      FONT-SIZE: 75pt; color: white; 
+      FONT-FAMILY: Verdana; 
+      BACKGROUND-COLOR: #934d11 
+
+    }
+    #botonRutaA{
+      BORDER:  rgb(15,15,15) 4px solid; 
+      FONT-SIZE: 75pt; color: white; 
+      FONT-FAMILY: Verdana; 
+      BACKGROUND-COLOR: #001489 
+
+    }
     #botonRutaK{
       BORDER:  rgb(15,15,15) 4px solid; 
       FONT-SIZE: 75pt; color: white; 
