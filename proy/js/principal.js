@@ -15,9 +15,30 @@ $(document).ready(function(){
       }
       return "";
 	}
+
+	function obtenerCapacidad(ruta) {
+		nombreCookie = "contador"+ruta;
+		const capacidadOptima = 270; 
+		let capacidadActual  = Number.parseInt(getCookie(nombreCookie),10);
+		const porcentajeCapacidad = Math.round((capacidadActual/capacidadOptima)*100);
+		let mensaje = "";
+		if (porcentajeCapacidad <= 35){
+			mensaje = "La mayoria de pasajeros iran sentados"
+		}else if (porcentajeCapacidad <= 50)
+			mensaje = "La mayoria de pasajeros iran parados"
+		else if (porcentajeCapacidad <= 85){
+			mensaje = "El bus va moderadamente lleno"
+		}else if (porcentajeCapacidad <= 100){
+			mensaje = "El bus va muy lleno"
+		}else{
+			mensaje = "Abstengase de subirse"
+		}
+		return `La capacidad de la ruta ${ruta} esta al ${porcentajeCapacidad}% \n ${mensaje}`;
+	}
 	$(document).on("click",".Rutas",function(){
 		cliqueado = $(event.target).val();
 		nombreCookie = "contador"+cliqueado;
+		alert(obtenerCapacidad(cliqueado));
 		if (getCookie(nombreCookie)!=""){
 			numero = Number.parseInt(getCookie(nombreCookie),10);
 			numero++;
