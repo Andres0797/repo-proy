@@ -22,6 +22,8 @@ class Portal extends mysql{
 		return $arreglo;
 	}
 	function listarOrigenes(){
+		// Modificar metodo para que se maneje con la columna fk_transito
+		// columna creada para pruebas en mysql
 		$sentencia = "SELECT DISTINCT fk_origen FROM ruta";
 		$conectado = $this->consultar($sentencia);
 		$arreglo = $conectado->fetch_all();
