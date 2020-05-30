@@ -127,14 +127,18 @@ $(document).ready(function(){
 			$("#paginaUsuario").css("background","url('../../"+parseado["general"]["img"]+"')");
 			$("#paginaUsuario").css("background-size","1365px 750px");
 			$.each(parseado["rutas"],function(llave,valor){
+				btnRuta = `<div type="button" class="Rutas" `;
 				var estiloBoton = "" 
 				var validacionEstilo = parseado["rutas"][llave]["nombre"].charAt(0).match(/[A-Z]/g);
 				if (validacionEstilo){
 					estiloBoton = "botonRuta"+validacionEstilo;
+					btnRuta+=` id="${estiloBoton}">${parseado["rutas"][llave]["nombre"]}</div>`;
 				}else{
 					estiloBoton = "botonRutaFacil";
+					btnRuta+=` id="${estiloBoton}">${parseado["rutas"][llave]["nombre"]}
+					<span class="destino">Destino: <br>${parseado["rutas"][llave]["destino"]}</span></div>`;
 				}
-				btnRuta = `<input type="button" class="Rutas" value="${parseado["rutas"][llave]["nombre"]}" id="${estiloBoton}">`;	
+				
 				$("#contenedor").append(btnRuta);
 				
 			});

@@ -22,7 +22,9 @@ class Ruta extends mysql{
 	}
 	//listar por id
 	function listarEstacionesPorPortal($origen){
-		$sentencia = "SELECT * FROM ruta WHERE fk_origen=".$origen;
+		$sentencia = "SELECT * FROM ruta 
+		LEFT JOIN portal ON (ruta.fk_destino=portal.id_portal) 
+		WHERE fk_origen=".$origen." OR fk_transito=".$origen;
 		$conectado = $this->consultar($sentencia);
 		$arreglo = $conectado->fetch_all();
 		$conectado->free();

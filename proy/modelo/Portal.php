@@ -22,8 +22,7 @@ class Portal extends mysql{
 		return $arreglo;
 	}
 	function listarOrigenes(){
-		// Modificar metodo para que se maneje con la columna fk_transito
-		// columna creada para pruebas en mysql
+		
 		$sentencia = "SELECT DISTINCT fk_origen FROM ruta";
 		$conectado = $this->consultar($sentencia);
 		$arreglo = $conectado->fetch_all();
@@ -52,8 +51,10 @@ class Portal extends mysql{
 		$arreglado["general"]["esPortal"] 	= $arreglo[0][2];
 		$arreglado["general"]["img"] 		= $arreglo[0][3];
 		foreach ($tablaRutas as $llave => $valor) {
-			$arreglado["rutas"][$llave]["id_ruta"] = $tablaRutas[$llave][0];
-			$arreglado["rutas"][$llave]["nombre"] = $tablaRutas[$llave][1];
+			$arreglado["rutas"][$llave]["id_ruta"] 		=  $tablaRutas[$llave][0];
+			$arreglado["rutas"][$llave]["nombre"]  		=  $tablaRutas[$llave][1];
+			$arreglado["rutas"][$llave]["nombre"]  		=  $tablaRutas[$llave][1];
+			$arreglado["rutas"][$llave]["destino"]  	=  $tablaRutas[$llave][6];
 		}
 		$conectado->free();
 		return $arreglado;
