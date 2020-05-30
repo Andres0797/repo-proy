@@ -30,8 +30,10 @@ class Portal extends mysql{
 		foreach ($arreglo as $llave => $valor) {
 
 			$idunico = $this->listarPorId($arreglo[$llave][0]);
-			$arregloFinal[$llave]["id"]		=$idunico["general"]["id_portal"];
-			$arregloFinal[$llave]["nombre"]	=$idunico["general"]["nombre"] ;
+			if ($idunico["general"]["esPortal"] == 1){
+				$arregloFinal[$llave]["id"]		=$idunico["general"]["id_portal"];
+				$arregloFinal[$llave]["nombre"]	=$idunico["general"]["nombre"] ;
+			}
 		}
 		
 		return json_encode($arregloFinal);

@@ -126,6 +126,7 @@ $(document).ready(function(){
 			console.log(parseado["general"]["img"]);
 			$("#paginaUsuario").css("background","url('../../"+parseado["general"]["img"]+"')");
 			$("#paginaUsuario").css("background-size","1365px 750px");
+			$("#paginaUsuario").css("background-repeat","no-repeat");
 			$.each(parseado["rutas"],function(llave,valor){
 				btnRuta = `<div type="button" class="Rutas" `;
 				var estiloBoton = "" 
