@@ -22,6 +22,7 @@ class Portal extends mysql{
 		return $arreglo;
 	}
 	function listarOrigenes(){
+		
 		$sentencia = "SELECT DISTINCT fk_origen FROM ruta";
 		$conectado = $this->consultar($sentencia);
 		$arreglo = $conectado->fetch_all();
@@ -29,8 +30,10 @@ class Portal extends mysql{
 		foreach ($arreglo as $llave => $valor) {
 
 			$idunico = $this->listarPorId($arreglo[$llave][0]);
-			$arregloFinal[$llave]["id"]		=$idunico["general"]["id_portal"];
-			$arregloFinal[$llave]["nombre"]	=$idunico["general"]["nombre"] ;
+			if ($idunico["general"]["esPortal"] == 1){
+				$arregloFinal[$llave]["id"]		=$idunico["general"]["id_portal"];
+				$arregloFinal[$llave]["nombre"]	=$idunico["general"]["nombre"] ;
+			}
 		}
 		
 		return json_encode($arregloFinal);
@@ -50,8 +53,10 @@ class Portal extends mysql{
 		$arreglado["general"]["esPortal"] 	= $arreglo[0][2];
 		$arreglado["general"]["img"] 		= $arreglo[0][3];
 		foreach ($tablaRutas as $llave => $valor) {
-			$arreglado["rutas"][$llave]["id_ruta"] = $tablaRutas[$llave][0];
-			$arreglado["rutas"][$llave]["nombre"] = $tablaRutas[$llave][1];
+			$arreglado["rutas"][$llave]["id_ruta"] 		=  $tablaRutas[$llave][0];
+			$arreglado["rutas"][$llave]["nombre"]  		=  $tablaRutas[$llave][1];
+			$arreglado["rutas"][$llave]["nombre"]  		=  $tablaRutas[$llave][1];
+			$arreglado["rutas"][$llave]["destino"]  	=  $tablaRutas[$llave][6];
 		}
 		$conectado->free();
 		return $arreglado;
