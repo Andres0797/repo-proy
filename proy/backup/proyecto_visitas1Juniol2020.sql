@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `contador_diario` (
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `numeroVisitas` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_contadord`),
-  KEY `fk_ruta_rel` (`fk_ruta`),
   CONSTRAINT `fk_ruta_rel` FOREIGN KEY (`fk_ruta`) REFERENCES `ruta` (`id_ruta`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
