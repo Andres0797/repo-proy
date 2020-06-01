@@ -1,12 +1,13 @@
 <?php
 namespace Proyecto\Controlador;
-//Clase conexion mysql
+//Clase conexion mysqli
 //Version 1.1 con MySQLi modificada por Esteban Delgado
 class mysql{
     
     var $servidor = "";var $usuario = "";var $clave = "";var $base = "";var $conexion;
     var $bandera = false;
     function __construct(){
+        print("pasa constructor");
         $this->servidor = "localhost";
         $this->usuario = "root";
         $this->clave = "";
@@ -20,7 +21,7 @@ class mysql{
     */
     function conectar()
 	{
-            $this->conexion = new \mysqli($this->servidor,$this->usuario,$this->clave,$this->base) 
+            $this->conexion = new \mysqli("localhost","esteban","rootapi2",$this->base) 
             or die ("Error de Conexion MySQL ".$this->conexion->connect_errno);
             $this->bandera = true;
             $this->conexion->set_charset("utf8");

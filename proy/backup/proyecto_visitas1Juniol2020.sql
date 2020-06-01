@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `contador_diario` (
 
 -- Dumping data for table proyecto_visitas.contador_diario: ~7 rows (approximately)
 /*!40000 ALTER TABLE `contador_diario` DISABLE KEYS */;
-INSERT IGNORE INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisitas`) VALUES
+REPLACE INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisitas`) VALUES
 	(1, 4, '2020-04-25 16:27:00', 85),
 	(2, 4, '2020-04-25 16:29:17', 15),
 	(3, 6, '2020-04-25 18:21:47', 2),
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `portal` (
 
 -- Dumping data for table proyecto_visitas.portal: ~29 rows (approximately)
 /*!40000 ALTER TABLE `portal` DISABLE KEYS */;
-INSERT IGNORE INTO `portal` (`id_portal`, `nombre`, `esPortal`, `urlFondo`) VALUES
+REPLACE INTO `portal` (`id_portal`, `nombre`, `esPortal`, `urlFondo`) VALUES
 	(1, 'Portal Eldorado', 1, 'img/portalDorado.jpg'),
 	(2, 'Terminal', 0, ''),
 	(3, 'Alcalá', 0, ''),
@@ -113,9 +113,9 @@ CREATE TABLE IF NOT EXISTS `ruta` (
   CONSTRAINT `fk_ruta_por_tran` FOREIGN KEY (`fk_transito`) REFERENCES `portal` (`id_portal`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table proyecto_visitas.ruta: ~68 rows (approximately)
+-- Dumping data for table proyecto_visitas.ruta: ~67 rows (approximately)
 /*!40000 ALTER TABLE `ruta` DISABLE KEYS */;
-INSERT IGNORE INTO `ruta` (`id_ruta`, `nombre`, `fk_origen`, `fk_destino`, `fk_transito`) VALUES
+REPLACE INTO `ruta` (`id_ruta`, `nombre`, `fk_origen`, `fk_destino`, `fk_transito`) VALUES
 	(1, '1', 1, 8, NULL),
 	(2, 'M86', 1, 6, NULL),
 	(3, 'L10', 1, 4, NULL),
