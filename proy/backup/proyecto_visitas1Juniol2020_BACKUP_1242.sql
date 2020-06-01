@@ -17,6 +17,8 @@ DROP DATABASE IF EXISTS `proyecto_visitas`;
 CREATE DATABASE IF NOT EXISTS `proyecto_visitas` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `proyecto_visitas`;
 
+<<<<<<< HEAD
+=======
 -- Dumping structure for table proyecto_visitas.contador_diario
 DROP TABLE IF EXISTS `contador_diario`;
 CREATE TABLE IF NOT EXISTS `contador_diario` (
@@ -39,6 +41,7 @@ REPLACE INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisit
 	(6, 7, '2020-05-22 19:38:39', 3),
 	(7, 9, '2020-05-22 19:39:09', 1);
 /*!40000 ALTER TABLE `contador_diario` ENABLE KEYS */;
+>>>>>>> 3dd9b0da28486788a4749b021e37bb57f09a2165
 
 -- Dumping structure for view proyecto_visitas.nombrerutas
 DROP VIEW IF EXISTS `nombrerutas`;
