@@ -17,29 +17,6 @@ DROP DATABASE IF EXISTS `proyecto_visitas`;
 CREATE DATABASE IF NOT EXISTS `proyecto_visitas` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `proyecto_visitas`;
 
--- Dumping structure for table proyecto_visitas.contador_diario
-DROP TABLE IF EXISTS `contador_diario`;
-CREATE TABLE IF NOT EXISTS `contador_diario` (
-  `id_contadord` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_ruta` int(11) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `numeroVisitas` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id_contadord`),
-  KEY `fk_ruta_rel` (`fk_ruta`),
-  CONSTRAINT `fk_ruta_rel` FOREIGN KEY (`fk_ruta`) REFERENCES `ruta` (`id_ruta`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
-
--- Dumping data for table proyecto_visitas.contador_diario: ~7 rows (approximately)
-/*!40000 ALTER TABLE `contador_diario` DISABLE KEYS */;
-REPLACE INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisitas`) VALUES
-	(1, 4, '2020-04-25 16:27:00', 85),
-	(2, 4, '2020-04-25 16:29:17', 15),
-	(3, 6, '2020-04-25 18:21:47', 2),
-	(4, 2, '2020-04-25 18:26:11', 200),
-	(5, 2, '2020-04-25 18:28:31', 150),
-	(6, 7, '2020-05-22 19:38:39', 3),
-	(7, 9, '2020-05-22 19:39:09', 1);
-/*!40000 ALTER TABLE `contador_diario` ENABLE KEYS */;
 
 -- Dumping structure for view proyecto_visitas.nombrerutas
 DROP VIEW IF EXISTS `nombrerutas`;
@@ -185,6 +162,31 @@ REPLACE INTO `ruta` (`id_ruta`, `nombre`, `fk_origen`, `fk_destino`, `fk_transit
 	(67, 'H13', 9, 16, NULL),
 	(68, '8', 29, 2, 9);
 /*!40000 ALTER TABLE `ruta` ENABLE KEYS */;
+
+-- Dumping structure for table proyecto_visitas.contador_diario
+DROP TABLE IF EXISTS `contador_diario`;
+CREATE TABLE IF NOT EXISTS `contador_diario` (
+  `id_contadord` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_ruta` int(11) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `numeroVisitas` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id_contadord`),
+  KEY `fk_ruta_rel` (`fk_ruta`),
+  CONSTRAINT `fk_ruta_rel` FOREIGN KEY (`fk_ruta`) REFERENCES `ruta` (`id_ruta`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table proyecto_visitas.contador_diario: ~7 rows (approximately)
+/*!40000 ALTER TABLE `contador_diario` DISABLE KEYS */;
+REPLACE INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisitas`) VALUES
+	(1, 4, '2020-04-25 16:27:00', 85),
+	(2, 4, '2020-04-25 16:29:17', 15),
+	(3, 6, '2020-04-25 18:21:47', 2),
+	(4, 2, '2020-04-25 18:26:11', 200),
+	(5, 2, '2020-04-25 18:28:31', 150),
+	(6, 7, '2020-05-22 19:38:39', 3),
+	(7, 9, '2020-05-22 19:39:09', 1);
+/*!40000 ALTER TABLE `contador_diario` ENABLE KEYS */;
+
 
 -- Dumping structure for view proyecto_visitas.rutascontador
 DROP VIEW IF EXISTS `rutascontador`;
