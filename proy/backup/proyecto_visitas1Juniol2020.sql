@@ -11,6 +11,12 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+
+-- Dumping database structure for proyecto_visitas
+DROP DATABASE IF EXISTS `proyecto_visitas`;
+CREATE DATABASE IF NOT EXISTS `proyecto_visitas` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `proyecto_visitas`;
+
 -- Dumping structure for table proyecto_visitas.contador_diario
 DROP TABLE IF EXISTS `contador_diario`;
 CREATE TABLE IF NOT EXISTS `contador_diario` (
@@ -24,9 +30,8 @@ CREATE TABLE IF NOT EXISTS `contador_diario` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table proyecto_visitas.contador_diario: ~7 rows (approximately)
-DELETE FROM `contador_diario`;
 /*!40000 ALTER TABLE `contador_diario` DISABLE KEYS */;
-INSERT INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisitas`) VALUES
+INSERT IGNORE INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisitas`) VALUES
 	(1, 4, '2020-04-25 16:27:00', 85),
 	(2, 4, '2020-04-25 16:29:17', 15),
 	(3, 6, '2020-04-25 18:21:47', 2),
@@ -58,9 +63,8 @@ CREATE TABLE IF NOT EXISTS `portal` (
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table proyecto_visitas.portal: ~29 rows (approximately)
-DELETE FROM `portal`;
 /*!40000 ALTER TABLE `portal` DISABLE KEYS */;
-INSERT INTO `portal` (`id_portal`, `nombre`, `esPortal`, `urlFondo`) VALUES
+INSERT IGNORE INTO `portal` (`id_portal`, `nombre`, `esPortal`, `urlFondo`) VALUES
 	(1, 'Portal Eldorado', 1, 'img/portalDorado.jpg'),
 	(2, 'Terminal', 0, ''),
 	(3, 'Alcalá', 0, ''),
@@ -109,10 +113,9 @@ CREATE TABLE IF NOT EXISTS `ruta` (
   CONSTRAINT `fk_ruta_por_tran` FOREIGN KEY (`fk_transito`) REFERENCES `portal` (`id_portal`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table proyecto_visitas.ruta: ~67 rows (approximately)
-DELETE FROM `ruta`;
+-- Dumping data for table proyecto_visitas.ruta: ~68 rows (approximately)
 /*!40000 ALTER TABLE `ruta` DISABLE KEYS */;
-INSERT INTO `ruta` (`id_ruta`, `nombre`, `fk_origen`, `fk_destino`, `fk_transito`) VALUES
+INSERT IGNORE INTO `ruta` (`id_ruta`, `nombre`, `fk_origen`, `fk_destino`, `fk_transito`) VALUES
 	(1, '1', 1, 8, NULL),
 	(2, 'M86', 1, 6, NULL),
 	(3, 'L10', 1, 4, NULL),
