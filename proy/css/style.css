@@ -8,6 +8,7 @@
       position: relative;
       display: inline-block;
       cursor: pointer;
+      max-height: 150px;
     }
     
     span.destino {

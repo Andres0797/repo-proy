@@ -16,6 +16,7 @@ $(document).ready(function(){
       return "";
 	}
 
+	
 	function obtenerCapacidad(ruta) {
 		nombreCookie = "contador"+ruta;
 		const capacidadOptima = 270; 
@@ -38,7 +39,6 @@ $(document).ready(function(){
 	$(document).on("click",".Rutas",function(){
 		cliqueado = $(event.target).val();
 		nombreCookie = "contador"+cliqueado;
-		alert(obtenerCapacidad(cliqueado));
 		if (getCookie(nombreCookie)!=""){
 			numero = Number.parseInt(getCookie(nombreCookie),10);
 			numero++;
@@ -48,6 +48,7 @@ $(document).ready(function(){
 			document.cookie=nombreCookie+"=1;path=/";
 			console.log(nombreCookie+" tiene 0");
 		}
+		alert(obtenerCapacidad(cliqueado));
 		
 	});
 	function actualizarVisitas(){
