@@ -1,2 +1,3 @@
 # Archivos a los que no se les hace seguimiento 
 proy/controlador/mysql.php
+vendor/*
