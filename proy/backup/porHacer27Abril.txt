@@ -1,7 +1,0 @@
-Queda hacer para la próxima vez: 
-
-- lista desplegable de todas las estaciones 
-- mostrar estaciones por portal seleccionado en la lista
-- terminar diseño de dos portales
-
-termina la versión 1 
