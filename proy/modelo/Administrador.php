@@ -28,7 +28,6 @@ class Administrador{
 
     }
     
-
     private function validarNombreUsuario(string $nombreUsuario) : bool {
         $sentencia  = "SELECT * FROM administrador WHERE usuario='".$nombreUsuario."'";
         $ejecutar   = $this->nuevo->consultar($sentencia);
@@ -37,6 +36,25 @@ class Administrador{
         }
         return true;
     }
+    private function validarCorreoElectronico(string $email) : bool {
+        $sentencia  = "SELECT * FROM administrador WHERE email='".$email."'";
+        $ejecutar   = $this->nuevo->consultar($sentencia);
+        if ($this->nuevo->f_total($ejecutar) < 1){
+            return false;
+        }
+        return true;
+    }
+    private function crearCookie(string $token,\DateTime $expiracion){
+
+        setcookie("token",$token,$expiracion->getTimeStamp(),"/");
+
+    }
+    //CERRAR SESION 
+    public function cerrarSesion(){
+        $pasado = new \DateTime("10 days ago");
+        setcookie("token","",$pasado->getTimeStamp(),"/");
+    }
+    // CREAR TOKEN CON FORMATO JWT
     private function setToken(string $usuario){
         $ahora  = new \DateTime(); 
         $futuro = new \DateTime(" now +3 minutes");
@@ -46,21 +64,36 @@ class Administrador{
             "iat"   => $ahora->getTimeStamp(),
             "exp"   => $futuro->getTimeStamp(),
             "aud"   => "http://localhost",
-            "scope" => $alcance
+            "data" => $alcance
         ];
-        return JWT::encode($payload,$clave_privada,"HS256");
+        $token = JWT::encode($payload,$clave_privada,"HS256");
+        $this->crearCookie($token,$futuro); 
+        return $token;
     }
-
-    private function getUsuario(string $usuario,string $password){
+    // INICIAR SESION
+    public function getUsuario(string $usuario,string $password): AdminDAO{
         $sentenciaBusca = "SELECT * FROM administrador WHERE usuario='".$usuario."' LIMIT 1";
         $conectaBusca   = $this->nuevo->consultar($sentenciaBusca);
-        if ($this->nuevo->f_total($conectaBusca) < 1){
-            throw new \Exception("El usuario ingresado no existe", 505);
-        }else if(!password_verify($password,$this->nuevo->f_fila($conectaBusca)->password)){
-            throw new \Exception("La contrasena ingresada es incorrecta", 505);
+        $resultadoFilas = $this->nuevo->f_fila($conectaBusca);
+        if (!$this->validarNombreUsuario($usuario) || !password_verify($password,$resultadoFilas->password)){
+            throw new \Exception("Usuario/Contrasena incorrectos", 505);
         }
-    }
+        // INICIO PROCESO DE INICIO DE SESION
+        $token = $this->setToken($usuario);
 
+        $daoCompleto                    = new AdminDAO();
+        $daoCompleto->id_admin          =    $resultadoFilas->id_admin;
+        $daoCompleto->nombreUsuario     =    $resultadoFilas->usuario;
+        $daoCompleto->nombre            =    $resultadoFilas->nombre;
+        $daoCompleto->email             =    $resultadoFilas->email;
+        $daoCompleto->creado_el         =    $resultadoFilas->creado_el;
+        $daoCompleto->actualizado_el    =    $resultadoFilas->actualizado_el;
+        $daoCompleto->token             =    $token;
+
+        return $daoCompleto;
+
+    }
+    // REGISTRAR USUARIO
     public function setUsuario(string $nombreUsuario,string $email,string $password,string $nombre) : AdminDAO{
         // GENERO UN ID UNICO PARA EL USUARIO DE FORMATO UUID
         $uuidObj            = Uuid::uuid4();
@@ -71,6 +104,8 @@ class Administrador{
             throw new \Exception("El Usuario ya existe y debe ser unico", 505);
         }else if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
             throw new \Exception("El correo electronico no tiene un formato valido", 505);
+        }else if($this->validarCorreoElectronico($email)){
+            throw new \Exception("El correo electronico ya existe y debe ser unico", 505);
         }
         //  AHORA ENCRIPTO LA CONTRASENA CON UN ALGORITMO DE COSTO 7 
         $encriptado = password_hash($password,PASSWORD_BCRYPT,['cost' => 7]);
@@ -90,7 +125,7 @@ class Administrador{
         // ALMACENO TODOS LOS DATOS COMO PROPIEDADES DEL OBJ ADMINDAO Y HAGO EL RETURN
         $daoCompleto  = new AdminDAO();
         $daoCompleto->id_admin          =    $resultadoBusca->id_admin;
-        $daoCompleto->usuario           =    $resultadoBusca->usuario;
+        $daoCompleto->nombreUsuario     =    $resultadoBusca->usuario;
         $daoCompleto->nombre            =    $resultadoBusca->nombre;
         $daoCompleto->email             =    $resultadoBusca->email;
         $daoCompleto->creado_el         =    $resultadoBusca->creado_el;

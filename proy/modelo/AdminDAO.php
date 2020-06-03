@@ -12,18 +12,7 @@ class AdminDAO{
     public $nombre; 
     public $token;
     
-    /*
-    public function  __constructor($id_admin,$nombreUsuario,$nombre,$email,$creado_el,$actualizado_el,$token){
-        $this->nombreUsuario    = $nombreUsuario;
-        $this->creado_el        = $creado_el;
-        $this->actualizado_el   = $actualizado_el;
-        $this->id_admin         = $id_admin;
-        $this->email            = $email;
-        $this->nombre           = $nombre;
-        $this->token            = $token;
-    }
-    */
-    
+
     public function obtenerTodo(){ 
         return [
             "id_admin"              => $this->id_admin,
