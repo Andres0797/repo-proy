@@ -1,0 +1,7 @@
+
+
+Por hacer 27 de mayo 
+
+- Arreglar Bug con ruta de transito 
+
+- Creacion de tabla usuarios y configurar autorizacion 

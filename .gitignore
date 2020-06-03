@@ -1,0 +1,6 @@
+# Archivos a los que no se les hace seguimiento 
+vendor/
+.vscode/
+.env
+.composer.lock
+
