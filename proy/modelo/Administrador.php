@@ -1,22 +1,106 @@
 <?php
-namespace Modelo\Administrador;
+namespace Proyecto\Modelo;
+require $_SERVER['DOCUMENT_ROOT']. '\vendor\autoload.php';
 
-class Administrador extends mysql{
+use Proyecto\Controlador\mysql as mysql;
+use Proyecto\Modelo\AdminDAO as AdminDAO;
+ 
+// LIBRERIAS USADAS
+use Dotenv\Dotenv;
+use Firebase\JWT\JWT; 
+use Ramsey\Uuid\Uuid;
 
-    private $usuario; 
+class Administrador{
+
+    private $nombreUsuario; 
     private $email; 
     private $password; 
-    private $nombre; 
+    private $nombre;
+    private $conexion;
+    private $nuevo;
+    private $dotenv;
 
+    public function __construct(){
+        $this->dotenv = Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
+        $this->dotenv->load();
+        $this->nuevo = new mysql();
+        $this->conexion = $this->nuevo->conectar();
 
-    public static function conUsuario( $usuario ){
-        $instancia = new self(); 
-        return $instancia->listarPorUsuario(); 
+    }
+    
+
+    private function validarNombreUsuario(string $nombreUsuario) : bool {
+        $sentencia  = "SELECT * FROM administrador WHERE usuario='".$nombreUsuario."'";
+        $ejecutar   = $this->nuevo->consultar($sentencia);
+        if ($this->nuevo->f_total($ejecutar) < 1){
+            return false;
+        }
+        return true;
+    }
+    private function setToken(string $usuario){
+        $ahora  = new \DateTime(); 
+        $futuro = new \DateTime(" now +3 minutes");
+        $clave_privada = getenv("LLAVE_JWT");
+        $alcance = ["usuario" => $usuario]; 
+        $payload = [
+            "iat"   => $ahora->getTimeStamp(),
+            "exp"   => $futuro->getTimeStamp(),
+            "aud"   => "http://localhost",
+            "scope" => $alcance
+        ];
+        return JWT::encode($payload,$clave_privada,"HS256");
     }
 
-    private function getUsuario($usuario,$password){ return; }
+    private function getUsuario(string $usuario,string $password){
+        $sentenciaBusca = "SELECT * FROM administrador WHERE usuario='".$usuario."' LIMIT 1";
+        $conectaBusca   = $this->nuevo->consultar($sentenciaBusca);
+        if ($this->nuevo->f_total($conectaBusca) < 1){
+            throw new \Exception("El usuario ingresado no existe", 505);
+        }else if(!password_verify($password,$this->nuevo->f_fila($conectaBusca)->password)){
+            throw new \Exception("La contrasena ingresada es incorrecta", 505);
+        }
+    }
 
-    private function setUsuario($usuario,$email,$password,$nombre){}
+    public function setUsuario(string $nombreUsuario,string $email,string $password,string $nombre) : AdminDAO{
+        // GENERO UN ID UNICO PARA EL USUARIO DE FORMATO UUID
+        $uuidObj            = Uuid::uuid4();
+        $id_admin           = $uuidObj->toString();  
+
+        // PROCESO DE VALIDACION 
+        if ($this->validarNombreUsuario($nombreUsuario)){
+            throw new \Exception("El Usuario ya existe y debe ser unico", 505);
+        }else if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+            throw new \Exception("El correo electronico no tiene un formato valido", 505);
+        }
+        //  AHORA ENCRIPTO LA CONTRASENA CON UN ALGORITMO DE COSTO 7 
+        $encriptado = password_hash($password,PASSWORD_BCRYPT,['cost' => 7]);
+
+        // UNA VEZ SUPERADA LA VALIDACION INGRESA EL ADMIN A LA BASE DE DATOS
+        $sentencia = "INSERT INTO administrador (id_admin,usuario,password,nombre,email,creado_el,actualizado_el) VALUES ('".$id_admin."','".$nombreUsuario."','".$encriptado."','".$nombre."','".$email."',CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP())";
+        $conectado = $this->nuevo->consultar($sentencia);
+        if (!$conectado){
+            throw new \Exception("Error al agregar el usuario a la base de datos", 505);
+        }
+        // UNA VEZ AGREGADO EL ADMIN A LA BASE DE DATOS, BUSCO EL ADMIN YA AGREGADO PARA DEVOLVERLO 
+        $sentenciaBusca = "SELECT * FROM administrador WHERE id_admin='".$id_admin."' LIMIT 1";
+        $conectaBusca   = $this->nuevo->consultar($sentenciaBusca);
+        $resultadoBusca = $this->nuevo->f_fila($conectaBusca); 
+        // ADEMAS DE LOS DATOS DEL ADMIN NORMAL TAMBIEN SE VA A DEVOLVER UN TOKEN JWT
+        $token = $this->setToken($resultadoBusca->usuario);
+        // ALMACENO TODOS LOS DATOS COMO PROPIEDADES DEL OBJ ADMINDAO Y HAGO EL RETURN
+        $daoCompleto  = new AdminDAO();
+        $daoCompleto->id_admin          =    $resultadoBusca->id_admin;
+        $daoCompleto->usuario           =    $resultadoBusca->usuario;
+        $daoCompleto->nombre            =    $resultadoBusca->nombre;
+        $daoCompleto->email             =    $resultadoBusca->email;
+        $daoCompleto->creado_el         =    $resultadoBusca->creado_el;
+        $daoCompleto->actualizado_el    =    $resultadoBusca->actualizado_el;
+        $daoCompleto->token             =    $token;
+        
+        return $daoCompleto;
+
+    }
+
 
     private function modificarUsuario($id){ return ; }
 

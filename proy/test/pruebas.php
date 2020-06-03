@@ -1,18 +1,20 @@
 <?php
-namespace Foo\Bar;
+namespace Proyecto\Test;
+
 require $_SERVER['DOCUMENT_ROOT']. '\vendor\autoload.php';
 
-use Proyecto\Modelo\Portal as Portal;
+use Proyecto\Modelo\Administrador as Administrador;
+use Proyecto\Modelo\AdminDAO;
 class Bar{
 
     public static function leer(){
         $instancia = new self();
-        $portalobj = new Portal(); 
-        return $portalobj->listarTodo();
+        $portalobj = new Administrador(); 
+        return $portalobj->setUsuario("pepito1","pepito1@gmail.com","megustalachangua","Pepito Fernandez");
     }
 }
 
-print_r(Bar::leer());
+print_r(Bar::leer()->obtenerTodo());  
 
 
 ?>

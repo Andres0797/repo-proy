@@ -3,7 +3,6 @@ namespace Proyecto\Modelo;
 
 use Proyecto\Controlador\mysql as mysql;
 use Proyecto\Modelo\Ruta as ruta;
-//require_once('../controlador/mysql.php');
 
 class Portal{
 	

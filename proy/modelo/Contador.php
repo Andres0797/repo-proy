@@ -2,9 +2,8 @@
 namespace Proyecto\Modelo;
 
 use Proyecto\Controlador\mysql as mysql;
-//require('../controlador/mysql.php');
 
-class Contador extends mysql{
+class Contador{
 
 	private $conexion;
 	private $nuevo;
