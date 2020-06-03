@@ -1,24 +1,19 @@
-
-
 <?php
-if ($_POST){
-//Incrementamos el valor
-$conta = $_POST["conta"] + 1;
-}
-else{
-//Valor inicial
-$conta = 0;
+namespace Foo\Bar;
+require $_SERVER['DOCUMENT_ROOT']. '\vendor\autoload.php';
 
+use Proyecto\Modelo\Portal as Portal;
+class Bar{
+
+    public static function leer(){
+        $instancia = new self();
+        $portalobj = new Portal(); 
+        return $portalobj->listarTodo();
+    }
 }
-echo $conta;
+
+print_r(Bar::leer());
+
+
 ?>
-<html>
-...
- 
-<form name="f1" action="<?=$_SERVER["PHP_SELF"]?>" method="post">
-<input type="hidden" name="conta" value="<?=$conta?>">
-<input type="submit" value="Incrementar">
-</form>
- 
-...
-</html>
+

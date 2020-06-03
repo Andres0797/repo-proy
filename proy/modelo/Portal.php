@@ -5,27 +5,26 @@ use Proyecto\Controlador\mysql as mysql;
 use Proyecto\Modelo\Ruta as ruta;
 //require_once('../controlador/mysql.php');
 
-class Portal extends mysql{
-
-
-
+class Portal{
+	
+	private $conexion; 
+	private $nuevo; 
 	function __construct(){
-		$this->usuario = "root";
-		$this->setBaseNombre("proyecto_visitas");
-		$this->conexion = $this->conectar();
+		$this->nuevo = new mysql();
+		$this->conexion = $this->nuevo->conectar();
 	}
 	function listarTodo(){
 		$sentencia = "SELECT * FROM portal";
-		$conectado = $this->consultar($sentencia);
-		$arreglo = $conectado->fetch_all();
-		$conectado->free();
+		$consulta = $this->nuevo->consultar($sentencia);
+		$arreglo = $this->nuevo->f_todo($consulta);
 		return $arreglo;
+		
 	}
 	function listarOrigenes(){
 		
 		$sentencia = "SELECT DISTINCT fk_origen FROM ruta";
-		$conectado = $this->consultar($sentencia);
-		$arreglo = $conectado->fetch_all();
+		$conectado = $this->nuevo->consultar($sentencia);
+		$arreglo = $this->nuevo->f_todo($conectado);
 		$arregloFinal=[];
 		foreach ($arreglo as $llave => $valor) {
 
@@ -43,8 +42,8 @@ class Portal extends mysql{
 	// si tiene rutas dependientes
 	function listarPorId($id_portal){
 		$sentencia = "SELECT * FROM portal WHERE id_portal=".$id_portal;
-		$conectado = $this->consultar($sentencia);
-		$arreglo = $conectado->fetch_all();
+		$conectado = $this->nuevo->consultar($sentencia);
+		$arreglo = $this->nuevo->f_todo($conectado);
 		$arreglado = [];
 		$objRuta = new Ruta();
 		$tablaRutas = $objRuta->listarEstacionesPorPortal($id_portal);
@@ -64,7 +63,7 @@ class Portal extends mysql{
 	//agregar no recibe id
 	function agregarEstacion($nombre,$esPortal){
 		$sentencia = "INSERT INTO portal (id_portal,nombre,esPortal) VALUES (NULL,".$nombre.",".$esPortal.")";
-		$conectado = $this->consultar($sentencia);
+		$conectado = $this->nuevo->consultar($sentencia);
 		if ($conectado){
 			return "Estacion agregada";
 		}else{
@@ -73,7 +72,7 @@ class Portal extends mysql{
 	}
 	function modificarEstacion($id_portal,$nombre,$esPortal){ 
 		$sentencia = "UPDATE portal SET nombre='".$nombre."',esPortal=".$esPortal." WHERE id_portal=".$id_portal;
-		$conectado = $this->consultar($sentencia);
+		$conectado = $this->nuevo->consultar($sentencia);
 		if ($conectado){
 			return "Estacion modificada correctamente";
 		}else{
@@ -82,7 +81,7 @@ class Portal extends mysql{
 	}
 	function eliminarEstacion($id_portal){
 		$sentencia = "DELETE FROM portal WHERE id_portal=".$id_portal;
-		$conectado = $this->consultar($sentencia);
+		$conectado = $this->nuevo->consultar($sentencia);
 		if ($conectado){
 			return "Estacion eliminada correctamente";
 		}else{

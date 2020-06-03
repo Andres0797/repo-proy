@@ -4,14 +4,13 @@ namespace Proyecto\Modelo;
 use Proyecto\Controlador\mysql as mysql; 
 
 
-class Ruta extends mysql{
-
+class Ruta{
 	
-
+	private $conexion; 
+	private $nuevo; 
 	function __construct(){
-		$this->usuario = "root";
-		$this->setBaseNombre("proyecto_visitas");
-		$this->conexion = $this->conectar();
+		$this->nuevo = new mysql();
+		$this->conexion = $this->nuevo->conectar();
 	}
 
 	function setNombre($nombre){
@@ -25,9 +24,8 @@ class Ruta extends mysql{
 		$sentencia = "SELECT * FROM ruta 
 		LEFT JOIN portal ON (ruta.fk_destino=portal.id_portal) 
 		WHERE fk_origen=".$origen." OR fk_transito=".$origen;
-		$conectado = $this->consultar($sentencia);
-		$arreglo = $conectado->fetch_all();
-		$conectado->free();
+		$conectado = $this->nuevo->consultar($sentencia);
+		$arreglo = $this->nuevo->f_todo($conectado);
 		return $arreglo;
 
 	}
@@ -35,7 +33,7 @@ class Ruta extends mysql{
 	function agregarRuta($nombre,$fk_origen,$fk_destino){
 		$sentencia = "INSERT INTO ruta (id_ruta,nombre,fk_origen,fk_destino) VALUES 
 		(NULL,".$nombre.",".$fk_origen.",".$fk_destino.")";
-		$conectado = $this->consultar($sentencia);
+		$conectado = $this->nuevo->consultar($sentencia);
 		if ($conectado){
 			return "Ruta agregada";
 		}else{
@@ -45,7 +43,7 @@ class Ruta extends mysql{
 	function modificarRuta($id_ruta,$nombre,$fk_origen,$fk_destino){ 
 		$sentencia = "UPDATE ruta SET nombre='".$nombre."',fk_origen=".$fk_origen.",fk_destino=".$fk_destino." 
 		WHERE id_ruta=".$id_ruta;
-		$conectado = $this->consultar($sentencia);
+		$conectado = $this->nuevo->consultar($sentencia);
 		if ($conectado){
 			return "Ruta modificada correctamente";
 		}else{
@@ -54,7 +52,7 @@ class Ruta extends mysql{
 	}
 	function eliminarRuta($id_ruta){
 		$sentencia = "DELETE FROM ruta WHERE id_ruta=".$id_ruta;
-		$conectado = $this->consultar($sentencia);
+		$conectado = $this->nuevo->consultar($sentencia);
 		if ($conectado){
 			return "Ruta eliminada correctamente";
 		}else{
