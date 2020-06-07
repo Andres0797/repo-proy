@@ -100,7 +100,10 @@ class Administrador{
         $id_admin           = $uuidObj->toString();  
 
         // PROCESO DE VALIDACION 
-        if ($this->validarNombreUsuario($nombreUsuario)){
+        if (func_num_args() != 4){
+            throw new \Exception("Todos los campos son obligatorios", 505);
+        }
+        else if ($this->validarNombreUsuario($nombreUsuario)){
             throw new \Exception("El Usuario ya existe y debe ser unico", 505);
         }else if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
             throw new \Exception("El correo electronico no tiene un formato valido", 505);

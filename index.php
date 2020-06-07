@@ -11,7 +11,9 @@ use \Tuupola\Middleware\JwtAuthentication as JwtAuth;
 use \Dotenv\Dotenv;
 require 'vendor/autoload.php';
 
-$app = new \Slim\App;
+
+// Defino guardias de autenticacion 
+$app = new \Slim\App();
 $dotenv = Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
 $dotenv->load();
 
@@ -30,8 +32,13 @@ $app->get('/auth/prueba', function (Request $request, Response $response) {
 $app->post('/auth/login', function (Request $request, Response $response) {
     $adminObj = new Administrador();
     $datos = $request->getParsedBody();
-    $response->getBody()->write(json_encode($adminObj->getUsuario($datos["username"],$datos["password"])->obtenerTodo()));
-	return $response->withstatus(200);
+    try {
+        $contenido = $adminObj->getUsuario($datos["username"],$datos["password"])->obtenerTodo();
+        $respuesta = $response->withJson($contenido,200);
+    } catch (\Throwable $e) {
+        $respuesta =  $response->withJson(array('error' => 401, 'mensaje' => $e->getMessage()),401);
+    }
+    return $respuesta;
 });
 $app->post('/auth/logout', function (Request $request, Response $response) {
     $adminObj = new Administrador();
@@ -39,17 +46,23 @@ $app->post('/auth/logout', function (Request $request, Response $response) {
     $response->getBody()->write(json_encode($adminObj->cerrarSesion()));
 	return $response->withstatus(200);
 });
-$app->post('/auth', function (Request $request, Response $response) {
+$app->post('/auth/registro', function (Request $request, Response $response) {
     $adminObj = new Administrador();
     $datos = $request->getParsedBody();
-    $usuarioRegistrado = $adminObj->setUsuario(
-        $datos["nombreUsuario"],
-        $datos["email"],
-        $datos["password"],
-        $datos["nombre"] 
-    )->obtenerTodo();
-    $response->getBody()->write(json_encode($usuarioRegistrado));
-	return $response->withstatus(200);
+    try {
+
+        $usuarioRegistrado = $adminObj->setUsuario(
+            $datos["nombreUsuario"],
+            $datos["email"],
+            $datos["password"],
+            $datos["nombre"] 
+        )->obtenerTodo();
+        $respesta = $response->withJson($usuarioRegistrado,201);
+
+    } catch (\Throwable $e) {
+        $respuesta =  $response->withJson(array('error' => 401, 'mensaje' => $e->getCode()),401);
+    }
+    return $respuesta;
 });
 //Lista los portales que tienen rutas, es decir, portales de origen
 $app->get('/portal/origenes', function (Request $request, Response $response) {
