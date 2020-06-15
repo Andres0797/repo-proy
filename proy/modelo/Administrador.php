@@ -57,7 +57,7 @@ class Administrador{
     // CREAR TOKEN CON FORMATO JWT
     private function setToken(string $usuario){
         $ahora  = new \DateTime(); 
-        $futuro = new \DateTime(" now +3 minutes");
+        $futuro = new \DateTime("now +2 days");
         $clave_privada = getenv("LLAVE_JWT");
         $alcance = ["usuario" => $usuario]; 
         $payload = [
@@ -70,26 +70,44 @@ class Administrador{
         $this->crearCookie($token,$futuro); 
         return $token;
     }
-    // INICIAR SESION
-    public function getUsuario(string $usuario,string $password): AdminDAO{
-        $sentenciaBusca = "SELECT * FROM administrador WHERE usuario='".$usuario."' LIMIT 1";
+    public function getIdUsuario(string $nombreUsuario): string{
+        $sentenciaBusca = "SELECT id_admin FROM administrador WHERE usuario='".$nombreUsuario."' LIMIT 1";
+        $conectaBusca   = $this->nuevo->consultar($sentenciaBusca);
+        if ($this->nuevo->f_total($conectaBusca) < 1){
+            throw new \Exception("El usuario no existe", 505);
+        }
+        return $this->nuevo->f_fila($conectaBusca)->id_admin;
+    }
+    public function getDatosUsuario(string $id): AdminDAO{
+        $sentenciaBusca = "SELECT * FROM administrador WHERE id_admin='".$id."' LIMIT 1";
         $conectaBusca   = $this->nuevo->consultar($sentenciaBusca);
         $resultadoFilas = $this->nuevo->f_fila($conectaBusca);
-        if (!$this->validarNombreUsuario($usuario) || !password_verify($password,$resultadoFilas->password)){
-            throw new \Exception("Usuario/Contrasena incorrectos", 505);
-        }
-        // INICIO PROCESO DE INICIO DE SESION
-        $token = $this->setToken($usuario);
 
-        $daoCompleto                    = new AdminDAO();
+        $daoCompleto                    =    new AdminDAO();
         $daoCompleto->id_admin          =    $resultadoFilas->id_admin;
         $daoCompleto->nombreUsuario     =    $resultadoFilas->usuario;
         $daoCompleto->nombre            =    $resultadoFilas->nombre;
         $daoCompleto->email             =    $resultadoFilas->email;
         $daoCompleto->creado_el         =    $resultadoFilas->creado_el;
         $daoCompleto->actualizado_el    =    $resultadoFilas->actualizado_el;
-        $daoCompleto->token             =    $token;
+        
+        return $daoCompleto;
 
+    }
+    // INICIAR SESION
+    public function getUsuario(string $usuario,string $password): AdminDAO{
+        $sentenciaBusca = "SELECT id_admin,password FROM administrador WHERE usuario='".$usuario."' LIMIT 1";
+        $conectaBusca   = $this->nuevo->consultar($sentenciaBusca);
+        $resultadoFilas = $this->nuevo->f_fila($conectaBusca);
+        if (!$this->validarNombreUsuario($usuario) || !password_verify($password,$resultadoFilas->password)){
+            throw new \Exception("Usuario/Contrasena incorrectos", 505);
+        }
+        // INICIO PROCESO DE INICIO DE SESION
+        $daoCompleto        = $this->getDatosUsuario($resultadoFilas->id_admin);
+        $token              = $this->setToken($usuario);
+        $daoCompleto->token = $token;
+
+        
         return $daoCompleto;
 
     }
@@ -120,20 +138,11 @@ class Administrador{
             throw new \Exception("Error al agregar el usuario a la base de datos", 505);
         }
         // UNA VEZ AGREGADO EL ADMIN A LA BASE DE DATOS, BUSCO EL ADMIN YA AGREGADO PARA DEVOLVERLO 
-        $sentenciaBusca = "SELECT * FROM administrador WHERE id_admin='".$id_admin."' LIMIT 1";
-        $conectaBusca   = $this->nuevo->consultar($sentenciaBusca);
-        $resultadoBusca = $this->nuevo->f_fila($conectaBusca); 
+        $daoCompleto            = $this->getDatosUsuario($id_admin);
         // ADEMAS DE LOS DATOS DEL ADMIN NORMAL TAMBIEN SE VA A DEVOLVER UN TOKEN JWT
-        $token = $this->setToken($resultadoBusca->usuario);
+        $token                  = $this->setToken($resultadoBusca->usuario);
         // ALMACENO TODOS LOS DATOS COMO PROPIEDADES DEL OBJ ADMINDAO Y HAGO EL RETURN
-        $daoCompleto  = new AdminDAO();
-        $daoCompleto->id_admin          =    $resultadoBusca->id_admin;
-        $daoCompleto->nombreUsuario     =    $resultadoBusca->usuario;
-        $daoCompleto->nombre            =    $resultadoBusca->nombre;
-        $daoCompleto->email             =    $resultadoBusca->email;
-        $daoCompleto->creado_el         =    $resultadoBusca->creado_el;
-        $daoCompleto->actualizado_el    =    $resultadoBusca->actualizado_el;
-        $daoCompleto->token             =    $token;
+        $daoCompleto->token     = $token;
         
         return $daoCompleto;
 

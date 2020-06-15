@@ -17,11 +17,23 @@ $app = new \Slim\App();
 $dotenv = Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
 $dotenv->load();
 
+// Seccion de Middleware
 $app->add(new JwtAuth([
-    "path" => ["/auth/prueba"],
+    "path" => ["/auth"],
+    "ignore" => ["/auth/login","/auth/logout","/auth/registro"],
+    "relaxed" => ["localhost"],
     "secret" => getenv("LLAVE_JWT") 
 
 ]));
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
+// Fin de Middleware
+
 
 //Lista los portales que tienen rutas, es decir, portales de origen
 $app->get('/auth/prueba', function (Request $request, Response $response) {
@@ -35,6 +47,19 @@ $app->post('/auth/login', function (Request $request, Response $response) {
     try {
         $contenido = $adminObj->getUsuario($datos["username"],$datos["password"])->obtenerTodo();
         $respuesta = $response->withJson($contenido,200);
+    } catch (\Throwable $e) {
+        $respuesta =  $response->withJson(array('error' => 401, 'mensaje' => $e->getMessage()),401);
+    }
+    return $respuesta;
+});
+$app->get('/auth', function (Request $request, Response $response) {
+    $adminObj   = new Administrador();
+    $token      = $request->getAttribute("token");
+    
+    try {
+        $id_admin        = $adminObj->getIdUsuario($token["data"]->usuario);
+        $usuarioCompleto = $adminObj->getDatosUsuario($id_admin);
+        $respuesta = $response->withJson($usuarioCompleto->obtenerTodo(),200);
     } catch (\Throwable $e) {
         $respuesta =  $response->withJson(array('error' => 401, 'mensaje' => $e->getMessage()),401);
     }
