@@ -25,6 +25,7 @@ $app->add(new JwtAuth([
     "secret" => getenv("LLAVE_JWT") 
 
 ]));
+// REGLAS CORS
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
