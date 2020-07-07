@@ -16,6 +16,9 @@ class Contador{
 		$this->nuevo = new mysql();
 		$this->conexion = $this->nuevo->conectar();
 	}
+	function contadorIntervalos($ruta){
+		
+	}
 
 	/* Numero de visitas en total de una ruta */
 	function contadorTotalRuta($ruta){

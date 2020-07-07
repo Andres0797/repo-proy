@@ -36,8 +36,8 @@ $(document).ready(function(){
 		}
 		return `La capacidad de la ruta ${ruta} esta al ${porcentajeCapacidad}% \n ${mensaje}`;
 	}
-	$(document).on("click",".Rutas",function(){
-		cliqueado = $(event.target).val();
+	$(document).on("click",".Rutas[type='button']",function(){
+		cliqueado = $(this).attr('tg-ruta');
 		nombreCookie = "contador"+cliqueado;
 		if (getCookie(nombreCookie)!=""){
 			numero = Number.parseInt(getCookie(nombreCookie),10);
@@ -134,10 +134,10 @@ $(document).ready(function(){
 				var validacionEstilo = parseado["rutas"][llave]["nombre"].charAt(0).match(/[A-Z]/g);
 				if (validacionEstilo){
 					estiloBoton = "botonRuta"+validacionEstilo;
-					btnRuta+=` id="${estiloBoton}">${parseado["rutas"][llave]["nombre"]}</div>`;
+					btnRuta+=` id="${estiloBoton}" tg-ruta="${parseado["rutas"][llave]["nombre"]}">${parseado["rutas"][llave]["nombre"]}</div>`;
 				}else{
 					estiloBoton = "botonRutaFacil";
-					btnRuta+=` id="${estiloBoton}">${parseado["rutas"][llave]["nombre"]}
+					btnRuta+=` id="${estiloBoton}" tg-ruta="${parseado["rutas"][llave]["nombre"]}">${parseado["rutas"][llave]["nombre"]}
 					<span class="destino">Destino: <br>${parseado["rutas"][llave]["destino"]}</span></div>`;
 				}
 				
