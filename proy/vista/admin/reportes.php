@@ -14,7 +14,7 @@
     </style> 
 </head>
 <body>
-    Aqui iran los reportes
+    Aqui iran los reportes..
     <div class="ct-chart ct-golden-section"></div>
 </body>
 <script type="text/javascript" src="../../js/jquery-3.5.0.min.js"></script>

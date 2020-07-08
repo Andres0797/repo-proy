@@ -1,11 +1,24 @@
 // Our labels and three data series
+
+
+async function nuevaData(){
+  try {
+    var resultado = await fetch('http://localhost/contador/ruta/1');
+    var resjson = await resultado.json();  
+    return resjson;
+  } catch (error) {
+    return;
+  }
+}
+
 var data = {
+
     labels: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00'],
     series: [
       [50, 40, 30, 70, 5, 10]
     ]
   };
-  
+
   // We are setting a few options for our chart and override the defaults
   var options = {
     // Don't draw the line chart points

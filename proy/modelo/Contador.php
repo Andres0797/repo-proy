@@ -26,7 +26,7 @@ class Contador{
 			$horaFinal=$horaInicial+2;
 			$sentencia = "SELECT SUM(numeroVisitas) as suma FROM contador_diario WHERE fk_ruta=".$ruta." AND HOUR(fecha)>".$horaInicial." AND HOUR(fecha)<".$horaFinal;
 			$conecto=$this->nuevo->consultar($sentencia);
-			$resultadoHoras[$indice] =  $this->nuevo->f_fila($conecto)->suma;
+			$resultadoHoras[$horaInicial+1] =  $this->nuevo->f_fila($conecto)->suma;
 		}
 		
 		return $resultadoHoras;
