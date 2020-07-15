@@ -11,15 +11,26 @@
 
   <style>
 
-    /*
-body {  background:url("https://bogota.gov.co/sites/default/files/inline-images/4-68_0.jpg") no-repeat;
-background-size:1365px 750px;
- }
-
- */
+    
+    body {  
+    background:url("https://bogota.gov.co/sites/default/files/inline-images/4-68_0.jpg") no-repeat;
+    background-size:1365px 750px;
+    }
+    #tablaCompleta{
+      background-color: white;
+    }
+    .navegacion{ 
+      color: white;
+      -webkit-text-stroke: 1px black;
+      font-size: 18px; 
+      font-weight: bold; 
+      font-family: verdana 
+    }
+    
 
 </style>
-<div style= "background-color:00bcd4;border-radius: 10px;height:100px;fond-family: Arial;fond-weight:bold;"">
+
+
 
 
   
@@ -32,13 +43,16 @@ background-size:1365px 750px;
 </svg>
 </center>
 
-        Selecciona punto a controlar 
-        <select id="selecOrigenes">
-          <!-- el appennd crea elementos aqui -->
-        </select>
-        <p>  <a href="listaPortales.php">Que Portal va a ver el Usuario</a> </p>
-        <p>  <a href="reportes.php">Grafica de Reportes de Portal</a> </p> 
-         <h2><p style="color:black;"> Cantidad de Usuarios a la Espera  </p> </h2>
+        <div class="navegacion">
+        
+          Selecciona punto a controlar 
+          <select id="selecOrigenes">
+            <!-- el appennd crea elementos aqui -->
+          </select>
+          <p>  <a href="listaPortales.php">Que Portal va a ver el Usuario</a> </p>
+          <p>  <a href="reportes.php">Grafica de Reportes de Portal</a> </p> 
+          <h2><p> Cantidad de Usuarios a la Espera  </p> </h2>
+        </div>
        <div id="numeroUsuarios">
 
         <table id="tablaCompleta" class="tg">
