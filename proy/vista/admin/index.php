@@ -36,7 +36,8 @@ background-size:1365px 750px;
         <select id="selecOrigenes">
           <!-- el appennd crea elementos aqui -->
         </select>
-        <p>  <a href="listaPortales.php">Que Portal va a ver el Usuario</a> </p> 
+        <p>  <a href="listaPortales.php">Que Portal va a ver el Usuario</a> </p>
+        <p>  <a href="reportes.php">Grafica de Reportes de Portal</a> </p> 
          <h2><p style="color:black;"> Cantidad de Usuarios a la Espera  </p> </h2>
        <div id="numeroUsuarios">
 

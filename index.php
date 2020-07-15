@@ -55,10 +55,8 @@ $app->post('/auth/login', function (Request $request, Response $response) {
 });
 $app->get('/contador/ruta/{id}', function(Request $request, Response $response,array $args){
     $contadorObj = new Contador(20,50);
-    
     try {
         $resultData = $contadorObj->contadorIntervalos($args['id']);
-
         $respuesta = $response->withJson($resultData, 200);
     } catch (\Throwable $th) {
         $respuesta =  $response->withJson(array('error' => 401, 'mensaje' => $e->getMessage()),401);

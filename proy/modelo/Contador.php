@@ -17,18 +17,13 @@ class Contador{
 		$this->conexion = $this->nuevo->conectar();
 	}
 	function contadorIntervalos($ruta){
-		// SELECT SUM(numeroVisitas) AS suma FROM contador_diario WHERE fk_ruta=1 AND HOUR(fecha)<12 AND HOUR(fecha)>10
 		$resultadoHoras = [];
 		for ($horaInicial=8; $horaInicial < 13 ; $horaInicial++) { 
-			// $horaInicial 8 y $horaFinal 10 , hora evaluada = 9am  
-			// $horaInicial 9 y $horaFinal 11 , hora evaluada = 10am
-			// $horaInicial 10 y $horaFinal 12 , hora evaluada = 11am
 			$horaFinal=$horaInicial+2;
 			$sentencia = "SELECT SUM(numeroVisitas) as suma FROM contador_diario WHERE fk_ruta=".$ruta." AND HOUR(fecha)>".$horaInicial." AND HOUR(fecha)<".$horaFinal;
 			$conecto=$this->nuevo->consultar($sentencia);
 			$resultadoHoras[$horaInicial+1] =  $this->nuevo->f_fila($conecto)->suma;
 		}
-		
 		return $resultadoHoras;
 	}
 

@@ -1,6 +1,7 @@
 # Archivos a los que no se les hace seguimiento 
 vendor/
 .vscode/
+node-modules/
 .env
 .composer.lock
-
+package-lock.json
