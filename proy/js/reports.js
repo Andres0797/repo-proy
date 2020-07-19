@@ -56,14 +56,3 @@
     new Chartist.Line('.ct-chart', dataC, options);
   })
   
-
-    
-   // return;
-  //});
-
-  
-  // We are setting a few options for our chart and override the defaults
-  
-  
-  // All you need to do is pass your configuration as third parameter to the chart function
-  
