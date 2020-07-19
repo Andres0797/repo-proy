@@ -39,51 +39,6 @@ INSERT INTO `administrador` (`id_admin`, `usuario`, `password`, `nombre`, `email
 	('51976d0c-cf8e-4433-935a-485418d029ec', 'pepito1', '$2y$07$MWZAGO4O8qXD1sQ5SLsiEuqJvWgD5ZBxZIbi.BrrAW187IDBtIY0e', 'Pepito Fernandez', 'pepito1@gmail.com', '2020-06-03 16:50:06', '2020-06-03 16:50:06');
 /*!40000 ALTER TABLE `administrador` ENABLE KEYS */;
 
--- Dumping structure for table proyecto_visitas.contador_diario
-DROP TABLE IF EXISTS `contador_diario`;
-CREATE TABLE IF NOT EXISTS `contador_diario` (
-  `id_contadord` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_ruta` int(11) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `numeroVisitas` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id_contadord`),
-  KEY `fk_ruta_rel` (`fk_ruta`),
-  CONSTRAINT `fk_ruta_rel` FOREIGN KEY (`fk_ruta`) REFERENCES `ruta` (`id_ruta`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
-
--- Dumping data for table proyecto_visitas.contador_diario: ~14 rows (approximately)
-DELETE FROM `contador_diario`;
-/*!40000 ALTER TABLE `contador_diario` DISABLE KEYS */;
-INSERT INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisitas`) VALUES
-	(11, 1, '2020-07-07 10:26:25', 2),
-	(12, 1, '2020-07-07 11:25:22', 20),
-	(13, 1, '2020-07-07 14:30:41', 15),
-	(14, 1, '2020-07-07 15:26:29', 50),
-	(15, 1, '2020-07-07 16:38:57', 0),
-	(16, 1, '2020-07-07 11:41:55', 30),
-	(17, 1, '2020-07-08 09:40:39', 180),
-	(18, 1, '2020-07-08 10:01:00', 320),
-	(19, 1, '2020-07-08 11:24:32', 290),
-	(20, 1, '2020-07-08 12:24:57', 390),
-	(21, 1, '2020-07-08 13:40:25', 123),
-	(22, 3, '2020-07-14 09:30:46', 50),
-	(23, 3, '2020-07-14 10:31:38', 180),
-	(24, 3, '2020-07-14 11:31:56', 120),
-	(25, 3, '2020-07-14 12:32:17', 190),
-	(26, 3, '2020-07-14 13:32:35', 270);
-/*!40000 ALTER TABLE `contador_diario` ENABLE KEYS */;
-
--- Dumping structure for view proyecto_visitas.nombrerutas
-DROP VIEW IF EXISTS `nombrerutas`;
--- Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `nombrerutas` (
-	`id_ruta` INT(11) NOT NULL,
-	`nombre` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_general_ci',
-	`rutaDesde` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_general_ci',
-	`rutaHasta` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_general_ci',
-	`rutaPasa` VARCHAR(60) NULL COLLATE 'utf8mb4_general_ci'
-) ENGINE=MyISAM;
-
 -- Dumping structure for table proyecto_visitas.portal
 DROP TABLE IF EXISTS `portal`;
 CREATE TABLE IF NOT EXISTS `portal` (
@@ -128,6 +83,16 @@ INSERT INTO `portal` (`id_portal`, `nombre`, `esPortal`, `urlFondo`) VALUES
 	(28, 'Santa Isabel', 0, 'Santa Isabel'),
 	(29, 'Guatoque - Veraguas', 0, 'Guatoque - Veraguas');
 /*!40000 ALTER TABLE `portal` ENABLE KEYS */;
+-- Dumping structure for view proyecto_visitas.rutascontador
+DROP VIEW IF EXISTS `rutascontador`;
+-- Creating temporary table to overcome VIEW dependency errors
+CREATE TABLE `rutascontador` (
+	`id_contadord` INT(11) NOT NULL,
+	`fecha` TIMESTAMP NOT NULL,
+	`numeroVisitas` INT(11) NOT NULL,
+	`nombre` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_general_ci'
+) ENGINE=MyISAM;
+
 
 -- Dumping structure for table proyecto_visitas.ruta
 DROP TABLE IF EXISTS `ruta`;
@@ -220,14 +185,51 @@ INSERT INTO `ruta` (`id_ruta`, `nombre`, `fk_origen`, `fk_destino`, `fk_transito
 	(68, '8', 29, 2, 9);
 /*!40000 ALTER TABLE `ruta` ENABLE KEYS */;
 
--- Dumping structure for view proyecto_visitas.rutascontador
-DROP VIEW IF EXISTS `rutascontador`;
+
+
+-- Dumping structure for table proyecto_visitas.contador_diario
+DROP TABLE IF EXISTS `contador_diario`;
+CREATE TABLE IF NOT EXISTS `contador_diario` (
+  `id_contadord` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_ruta` int(11) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `numeroVisitas` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id_contadord`),
+  KEY `fk_ruta_rel` (`fk_ruta`),
+  CONSTRAINT `fk_ruta_rel` FOREIGN KEY (`fk_ruta`) REFERENCES `ruta` (`id_ruta`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table proyecto_visitas.contador_diario: ~14 rows (approximately)
+DELETE FROM `contador_diario`;
+/*!40000 ALTER TABLE `contador_diario` DISABLE KEYS */;
+INSERT INTO `contador_diario` (`id_contadord`, `fk_ruta`, `fecha`, `numeroVisitas`) VALUES
+	(11, 1, '2020-07-07 10:26:25', 2),
+	(12, 1, '2020-07-07 11:25:22', 20),
+	(13, 1, '2020-07-07 14:30:41', 15),
+	(14, 1, '2020-07-07 15:26:29', 50),
+	(15, 1, '2020-07-07 16:38:57', 0),
+	(16, 1, '2020-07-07 11:41:55', 30),
+	(17, 1, '2020-07-08 09:40:39', 180),
+	(18, 1, '2020-07-08 10:01:00', 320),
+	(19, 1, '2020-07-08 11:24:32', 290),
+	(20, 1, '2020-07-08 12:24:57', 390),
+	(21, 1, '2020-07-08 13:40:25', 123),
+	(22, 3, '2020-07-14 09:30:46', 50),
+	(23, 3, '2020-07-14 10:31:38', 180),
+	(24, 3, '2020-07-14 11:31:56', 120),
+	(25, 3, '2020-07-14 12:32:17', 190),
+	(26, 3, '2020-07-14 13:32:35', 270);
+/*!40000 ALTER TABLE `contador_diario` ENABLE KEYS */;
+
+-- Dumping structure for view proyecto_visitas.nombrerutas
+DROP VIEW IF EXISTS `nombrerutas`;
 -- Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `rutascontador` (
-	`id_contadord` INT(11) NOT NULL,
-	`fecha` TIMESTAMP NOT NULL,
-	`numeroVisitas` INT(11) NOT NULL,
-	`nombre` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_general_ci'
+CREATE TABLE `nombrerutas` (
+	`id_ruta` INT(11) NOT NULL,
+	`nombre` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`rutaDesde` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`rutaHasta` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`rutaPasa` VARCHAR(60) NULL COLLATE 'utf8mb4_general_ci'
 ) ENGINE=MyISAM;
 
 -- Dumping structure for view proyecto_visitas.nombrerutas
