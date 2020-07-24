@@ -30,6 +30,7 @@
             <div class="d-flex w-100 justify-content-between" style="">
                 <span><i class="fa fa-circle" style="color:#00949C !important"></i>L10</span>
                 <span><i class="fa fa-circle" style="color:black !important"></i>Ruta Facil 1, Destino: Universidades</span>
+                <span><i class="fa fa-circle" style="color:#8A0079 !important"></i>M86</span>
             </div>
         </div>
     </div>

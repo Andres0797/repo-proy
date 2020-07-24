@@ -3,7 +3,7 @@
   const res = {
   uno: null, 
   L10: null,
-  // M86 : null
+  M86 : null,
   }
   fetch('http://localhost/contador/ruta/1')
   .then(function(datos){
@@ -21,15 +21,15 @@
   .then(function(datos){
     res.L10 = datos;  
   })
-  // .then(function(){
-  //   return fetch('http://localhost/contador/ruta/:idRuta')
-  // })
-  // .then(function(datos){
-  //   return datos.json();
-  // })
-  // .then(function(datos){
-  //   res.M86 = datos;  
-  // })
+  .then(function(){
+     return fetch('http://localhost/contador/ruta/2')
+   })
+   .then(function(datos){
+    return datos.json();
+   })
+   .then(function(datos){
+     res.M86 = datos;  
+   })
   .then(function(){
     document.getElementById("loading").style.opacity =  0;
     const options = {
@@ -50,8 +50,8 @@
     };
     const dataC = {
       labels: Object.keys(res.L10),
-      series: [Object.values(res.uno),Object.values(res.L10)]
-    //series: [Object.values(res.uno),Object.values(res.L10),Object.values(res.M86)]
+      series: [Object.values(res.uno),Object.values(res.L10)],
+      series: [Object.values(res.uno),Object.values(res.L10),Object.values(res.M86)]
     };
     new Chartist.Line('.ct-chart', dataC, options);
   })
